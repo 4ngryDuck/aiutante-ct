@@ -1,0 +1,12 @@
+{
+  "_readme": "Demo only: the helper server on 8533 talks to tools/mock_engine.py on 8535. Data goes to demo/_data (ignored by git).",
+  "port": 8533,
+  "language": "Italian",
+  "data_dir": "demo/_data",
+  "network": {"enabled": false, "addresses": []},
+  "engines": {
+    "local": {"url": "http://127.0.0.1:8535/v1/chat/completions", "model": "mock", "context_chars": 40000, "json_mode": true, "extra": {}}
+  },
+  "order": {},
+  "temperature": {}
+}

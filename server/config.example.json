@@ -1,0 +1,66 @@
+{
+  "_readme": "Copied to config.json on the first start (config.json is yours and is not in git). See docs/CONFIG.md.",
+  "port": 8433,
+  "language": "Italian",
+  "data_dir": "data",
+
+  "network": {
+    "_note": "Phone / other devices. OFF by default. To use it: enabled=true, addresses = this PC's IP on your home network (192.168.x.x) or Tailscale (100.x.x.x). Other devices need the key in data/key.txt.",
+    "enabled": false,
+    "addresses": []
+  },
+
+  "engine": {
+    "_note": "Used by START.bat / start.sh to launch llama-server. backend: vulkan (AMD/Intel/NVIDIA), cuda (NVIDIA), cpu, or metal on macOS (automatic).",
+    "backend": "vulkan",
+    "llama_dir": "engine",
+    "model_file": "models/gemma-4-26B-A4B-it-heretic.IQ4_XS.gguf",
+    "alias": "local-model",
+    "port": 8434,
+    "context": 65536,
+    "parallel": 2,
+    "extra_args": ["-fa", "on", "-ctk", "q4_0", "-ctv", "q4_0", "--jinja", "--reasoning", "off"],
+    "env": {}
+  },
+
+  "engines": {
+    "local": {
+      "_note": "Any OpenAI-compatible chat endpoint works (llama-server, KoboldCPP, LM Studio, Ollama's /v1...).",
+      "url": "http://127.0.0.1:8434/v1/chat/completions",
+      "model": "local-model",
+      "context_chars": 90000,
+      "json_mode": true,
+      "extra": {}
+    },
+    "kobold": {
+      "_note": "Optional fallback: KoboldCPP on its default port, used only if 'local' is off.",
+      "url": "http://127.0.0.1:5001/v1/chat/completions",
+      "model": "kobold",
+      "context_chars": 60000,
+      "extra": {}
+    }
+  },
+
+  "order": {
+    "_note": "For each job, the engines to try in order: the first one running is used.",
+    "traduci": ["local", "kobold"],
+    "rifinisci": ["local", "kobold"],
+    "leggi": ["local", "kobold"],
+    "lore": ["local", "kobold"],
+    "stato": ["local", "kobold"],
+    "riassunto": ["local", "kobold"],
+    "idee": ["local", "kobold"],
+    "idea_box": ["local", "kobold"]
+  },
+
+  "temperature": {
+    "traduci": 0.2,
+    "rifinisci": 0.5,
+    "leggi": 0.2,
+    "lore": 0.3,
+    "stato": 0.2,
+    "riassunto": 0.3,
+    "idee": 0.9,
+    "idea_box": 0.6
+  }
+}

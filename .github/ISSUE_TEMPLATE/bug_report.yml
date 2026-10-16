@@ -1,0 +1,31 @@
+name: Bug report
+description: Something does not work (for example "page element not found")
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! **Do not paste real chats, account names, keys (data/key.txt) or private stories.** Use invented text or the demo page.
+  - type: input
+    id: version
+    attributes: { label: Version, description: "⚙ Settings shows it at the bottom (e.g. 0.7.0)" }
+    validations: { required: true }
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options: [Windows, Linux, macOS, Phone]
+    validations: { required: true }
+  - type: input
+    id: browser
+    attributes: { label: Browser and userscript manager, placeholder: "Chrome 141 + Tampermonkey 5.4" }
+  - type: input
+    id: gpu
+    attributes: { label: Graphics card and model, placeholder: "RX 6800 16 GB, Gemma 4 26B IQ4_XS" }
+  - type: textarea
+    id: what
+    attributes: { label: What happened, description: "Which button, what you expected, what you saw (message in the panel)." }
+    validations: { required: true }
+  - type: textarea
+    id: logs
+    attributes: { label: Logs (optional), description: "From data/logs/server.log. Remove anything personal.", render: text }

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aiutante CT demo chat</title>
+<style>
+  :root { color-scheme: dark; --bg:#14161b; --card:#1d2027; --line:#2b2f38; --text:#e6e8ee; --dim:#9aa1ad; --accent:#7c6cf0; }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 15px/1.55 system-ui, "Segoe UI", sans-serif; background:var(--bg); color:var(--text); }
+  header { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid var(--line); background:#181a20; }
+  header .avatar { width:36px; height:36px; border-radius:50%; background: linear-gradient(135deg, #3a6ea5, #b98a4a); }
+  header b { flex:1; } header small { color:var(--dim); display:block; font-weight:400; }
+  header button { background:none; border:1px solid var(--line); color:var(--text); border-radius:8px; padding:6px 10px; cursor:pointer; }
+  .banner { margin:12px auto 0; max-width:760px; padding:8px 12px; border-radius:8px; background:#2a2440; color:#d9d2ff; font-size:13px; }
+  main { max-width:760px; margin:0 auto; padding:12px 16px 140px; }
+  .vlist-item { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin:10px 0; }
+  .vlist-item .who { font-weight:600; font-size:13px; color:var(--dim); margin-bottom:3px; }
+  .vlist-item.user { background:#1f2430; }
+  footer { position:fixed; left:0; right:0; bottom:0; padding:12px 16px; background:linear-gradient(transparent, var(--bg) 30%); }
+  footer .bar { max-width:760px; margin:0 auto; display:flex; gap:8px; }
+  textarea { flex:1; min-height:56px; resize:vertical; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:12px; padding:10px 12px; font:inherit; }
+  footer button { background:var(--accent); color:#fff; border:0; border-radius:12px; padding:0 18px; font-weight:600; }
+  /* fake "site" dialogs, only so the lorebook buttons of the panel can be tried */
+  [role=dialog] { position:fixed; top:8vh; left:50%; transform:translateX(-50%); width:min(520px, 94vw); max-height:80vh; overflow:auto; z-index:50;
+                  background:#1b1e25; border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:0 20px 60px #000a; }
+  [role=dialog] h3 { margin:0 0 10px; font-size:15px; }
+  [role=dialog] button { background:#2b2f38; color:var(--text); border:1px solid #3a3f4a; border-radius:8px; padding:6px 10px; margin:3px; cursor:pointer; }
+  [role=dialog] input, [role=dialog] textarea { width:100%; margin:4px 0; background:#111318; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:7px; font:inherit; }
+  .chip { display:inline-flex; gap:4px; align-items:center; background:#2a2440; border-radius:12px; padding:2px 8px; margin:2px; font-size:13px; }
+  .chip button { padding:0 4px; margin:0; border:0; background:none; }
+  .entry { padding:6px 8px; border-bottom:1px solid var(--line); cursor:pointer; }
+</style>
+</head>
+<body>
+<header>
+  <span class="avatar"></span>
+  <b>Mara Quill <small>The Lighthouse at Port Avel · demo story</small></b>
+  <button aria-label="Settings" title="Settings">⚙</button>
+</header>
+<div class="banner">Demo page for Aiutante CT, with an invented story. It is <b>not</b> Character Tavern: it only imitates the bits of a chat page the helper reads. Click the blue orb ✦.</div>
+<main id="chat"></main>
+<footer><div class="bar"><textarea placeholder="Type here"></textarea><button>Send</button></div></footer>
+
+<!-- The data a chat page carries, minified like the real thing: the helper parses it (repeated strings become variables a, b). -->
+<script>
+window.__demo=(function(a,b){return {data:{user:{username:"demo-user",displayName:"Demo"},selectedPersona:1,personas:[{id:1,name:"Rowan"}],card:{name:"Mara Quill",inChatName:"Mara"},chat:{id:42,summary:""},lorebook:{entries:[{name:"Mara Quill",keys:["mara","quill","keeper"],content:"[Mara Quill: 29, keeper of the Port Avel lighthouse since her father vanished at sea. Dry humour, stubborn, never lets anyone light the lantern.]",enabled:true},{name:"Rowan",keys:["rowan","traveller"],content:"[Rowan: a traveller looking for passage north. Quiet, observant, owes nobody in Port Avel anything.]",enabled:true}]},messages:[{role:"assistant",message:"*The lighthouse stairs creak under every step. At the top, Mara sets down a brass lantern with a lens crusted in salt.* \"You wanted to see the light that never goes out? This is it. Don't touch it.\""},{role:"user",message:"*Rowan looks at the lantern, then at her.* \"It looks older than the tower.\""},{role:"assistant",message:a},{role:"user",message:"*Rowan steps closer to the glass, fog pressing against the windows.* \"And what does it show tonight?\""},{role:"assistant",message:b}]}}}("\"It is. My father brought it back from the north: the Saltglass Lantern.\" *She strikes a match.* \"When it's lit, it shows ships before they arrive.\"","*The flame catches. Out on the empty bay, a ship with torn red sails glows faintly in the lens.* \"That one,\" *Mara whispers,* \"should not be there.\""));
+</script>
+<script>
+  // Draw the chat from the demo data (a real site does this itself).
+  const d = window.__demo.data;
+  for (const m of d.messages) {
+    const div = document.createElement('div');
+    div.className = 'vlist-item ' + m.role;
+    div.innerHTML = '<div class="who"></div><div class="txt"></div>';
+    div.querySelector('.who').textContent = m.role === 'user' ? 'Rowan' : 'Mara';
+    div.querySelector('.txt').textContent = m.message;
+    document.getElementById('chat').append(div);
+  }
+
+  // Minimal fake dialogs: Settings → Lorebooks → Add Entry / Edit, with the same labels the helper clicks.
+  const dlg = (html) => { const x = document.createElement('div'); x.setAttribute('role', 'dialog'); x.innerHTML = html; document.body.append(x); return x; };
+  const close = (x) => x.remove();
+  document.querySelector('[aria-label=Settings]').onclick = () => {
+    const s = dlg('<h3>Chat Settings</h3><button>Lorebooks (1)</button><button>Memory</button><button class="x">Close</button>');
+    s.querySelector('.x').onclick = () => close(s);
+    s.querySelector('button').onclick = () => {
+      const l = dlg('<h3>SELECT LOREBOOK · Demo lorebook</h3><div class="list"></div><button>Add Entry</button><button class="x">Close</button>');
+      l.querySelector('.x').onclick = () => close(l);
+      const list = l.querySelector('.list');
+      const draw = () => { list.innerHTML = ''; for (const e of d.lorebook.entries) { const r = document.createElement('div'); r.className = 'entry'; const n = document.createElement('span'); n.textContent = e.name; r.append(n); r.onclick = () => view(e); list.append(r); } };
+      draw();
+      l.querySelectorAll('button')[0].onclick = () => form(null);
+      function view(e) {
+        const v = dlg('<h3></h3><p></p><button>Edit</button><button aria-label="Close">Close</button>');
+        v.querySelector('h3').textContent = e.name; v.querySelector('p').textContent = e.content;
+        v.querySelector('[aria-label=Close]').onclick = () => close(v);
+        v.querySelector('button').onclick = () => form(e);
+      }
+      function form(e) {
+        const f = dlg(`<h3>${e ? 'Edit Entry' : 'Create New Entry'}</h3><input placeholder="Entry name"><textarea rows="5"></textarea>
+          <div class="chips"></div><input placeholder="Type a keyword and press Enter"><button aria-label="Add keyword">+</button>
+          <div class="msg"></div><button class="ok">${e ? 'Save Changes' : 'Create Entry'}</button><button class="x">Cancel</button>`);
+        const [name, kw] = f.querySelectorAll('input'); const text = f.querySelector('textarea'); const chips = f.querySelector('.chips');
+        let keys = e ? [...e.keys] : [];
+        const drawChips = () => { chips.innerHTML = ''; keys.forEach((k, i) => { const c = document.createElement('span'); c.className = 'chip'; c.textContent = k; const b = document.createElement('button'); b.setAttribute('aria-label', 'Remove keyword ' + k); b.textContent = '×'; b.onclick = () => { keys.splice(i, 1); drawChips(); }; c.append(b); chips.append(c); }); };
+        if (e) { name.value = e.name; text.value = e.content; }
+        drawChips();
+        f.querySelector('[aria-label="Add keyword"]').onclick = () => { if (kw.value.trim()) { keys.push(kw.value.trim()); kw.value = ''; drawChips(); } };
+        f.querySelector('.x').onclick = () => close(f);
+        f.querySelector('.ok').onclick = () => {
+          if (!text.value.trim()) { f.querySelector('.msg').textContent = 'Entry content is required'; return; }
+          if (e) Object.assign(e, { name: name.value, content: text.value, keys }); else d.lorebook.entries.push({ name: name.value, content: text.value, keys, enabled: true });
+          close(f); draw();
+        };
+      }
+    };
+  };
+</script>
+<script src="/gm-shim.js"></script>
+<script src="/aiutante-ct.user.js"></script>
+</body>
+</html>
