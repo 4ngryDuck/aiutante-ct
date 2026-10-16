@@ -127,7 +127,7 @@ third-party models with their own licenses; read their pages.
 1. Install **Tampermonkey** (Chrome, Edge, Brave) or **Violentmonkey** (Firefox, LibreWolf).
    On recent Chrome: `chrome://extensions` → Tampermonkey → *Details* → enable **Allow user scripts**.
 2. With the helper ON, open **<http://127.0.0.1:8433/aiutante-ct.user.js>** and press **Install**.
-   Updates then come from your own PC whenever you update this folder. (Also on [Greasy Fork](https://greasyfork.org/scripts/600563), see the FAQ.)
+   Updates then come from your own PC whenever you update this folder. (Also on [Greasy Fork](https://sleazyfork.org/scripts/600563), see the FAQ.)
 3. Open a chat on Character Tavern and click the blue orb ✦. If Tampermonkey asks whether the script may connect to
    `127.0.0.1`, choose **Always allow**.
 
