@@ -2,7 +2,7 @@
 // @name            Aiutante CT - local AI helper for Character Tavern
 // @name:it         Aiutante CT - aiutante IA locale per Character Tavern
 // @namespace       https://github.com/4ngryDuck/aiutante-ct
-// @version         0.7.0
+// @version         0.7.1
 // @description     A button bar for Character Tavern chats, powered by an AI model on YOUR PC: translate and polish your messages, lorebook proposals with versions and restore, current state, summaries, ideas. Needs the free local server from the homepage. Click-only: no bot, no site API.
 // @description:it  Pulsantiera per le chat di Character Tavern con un modello IA sul TUO PC: traduci e rifinisci i messaggi, voci di lorebook con versioni e ripristino, stato, riassunti, idee. Serve il server locale gratuito (vedi homepage). Solo su clic: niente bot, niente API del sito.
 // @author          4ngryDuck
@@ -108,7 +108,7 @@
             'same': 'same',
             'err.notfound': 'page element not found (did the site change?)',
             'err.settings': 'Settings button not found',
-            'err.nolore': 'this chat has no lorebook: create one in Settings → Lorebooks, then try again',
+            'err.nolore': 'this chat has no lorebook yet: press "Create New Lorebook" (or "Get from Original Card") in the site Lorebook panel, then press the button again',
             'err.form': 'the site\'s form did not fill completely: check it and press the button yourself',
             'err.rejected': 'the site did not accept the entry: check the form and press the button yourself',
             'err.off': 'server off or unreachable: start Aiutante CT on your PC',
@@ -230,7 +230,7 @@
             'same': 'uguale',
             'err.notfound': 'elemento della pagina non trovato (il sito e\' cambiato?)',
             'err.settings': 'pulsante Settings non trovato',
-            'err.nolore': 'questa chat non ha un lorebook: creane uno in Settings → Lorebooks, poi riprova',
+            'err.nolore': 'questa chat non ha ancora un lorebook: premi "Create New Lorebook" (o "Get from Original Card") nel riquadro Lorebook del sito, poi premi di nuovo il pulsante',
             'err.form': 'il modulo del sito non si e\' riempito del tutto: controlla e premi tu il pulsante',
             'err.rejected': 'il sito non ha accettato la voce: controlla il modulo e premi tu il pulsante',
             'err.off': 'server spento o irraggiungibile: accendi l\'Aiutante CT sul PC',
@@ -541,7 +541,11 @@
         }
         const tessera = await aspetta(() => finestre().map((d) => [...d.querySelectorAll('button')].find((b) => /^Lorebooks/.test(b.innerText.trim()))).find(Boolean));
         tessera.click();
-        pannello = await aspetta(() => finestre().find((d) => /SELECT LOREBOOK/i.test(d.innerText)));
+        // Chat senza lorebook: il sito mostra "No lorebooks available" invece della lista; lo dico chiaro.
+        const vuoto = () => [...document.querySelectorAll('[role=dialog], aside, section, div')]
+            .find((d) => d.children.length < 40 && /No lorebooks available/i.test(d.innerText || ''));
+        pannello = await aspetta(() => finestre().find((d) => /SELECT LOREBOOK/i.test(d.innerText)) || (vuoto() ? 'vuoto' : null));
+        if (pannello === 'vuoto') throw new Error(t('err.nolore'));
         if (!bottone(pannello, 'Add Entry')) throw new Error(t('err.nolore'));
         return pannello;
     }

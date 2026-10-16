@@ -24,7 +24,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
 
-VERSIONE = "0.7.0"
+VERSIONE = "0.7.1"
 CASA = Path(__file__).resolve().parent
 RADICE = CASA.parent
 _ap = argparse.ArgumentParser(description="Aiutante CT local server")
