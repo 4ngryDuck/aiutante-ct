@@ -58,7 +58,7 @@ casuale creata al primo avvio (`data/key.txt`).
    **Linux / macOS:** `sh scripts/unix/setup.sh`, poi `sh scripts/unix/start.sh`.
 2. Installa **Tampermonkey** (Chrome/Edge) o **Violentmonkey** (Firefox/LibreWolf). Su Chrome recente:
    `chrome://extensions` → Tampermonkey → Dettagli → **Consenti script utente**.
-3. Ad aiutante acceso apri **<http://127.0.0.1:8433/aiutante-ct.user.js>** e premi **Installa**.
+3. Ad aiutante acceso apri **<http://127.0.0.1:8433/aiutante-ct.user.js>** e premi **Installa** (oppure da [Greasy Fork](https://greasyfork.org/scripts/600563)).
 4. Apri una chat su Character Tavern e clicca la sfera blu.
 
 Serve una scheda video da **16 GB** per il modello consigliato (Gemma 4 26B-A4B heretic, 14 GB); con 8-12 GB ci sono
