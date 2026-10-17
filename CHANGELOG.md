@@ -2,6 +2,10 @@
 
 All notable changes. Format: [Keep a Changelog](https://keepachangelog.com), versions: [SemVer](https://semver.org).
 
+## [Unreleased]
+### Changed
+- llama-server starts with `--load-mode none` (no mmap): RAM use drops from ~14 GB to ~0.9 GB when the model is fully in VRAM, same speed.
+
 ## [0.7.1] - 2026-10-17
 ### Fixed
 - Restoring or inserting an entry in a chat with no lorebook now says so clearly ("Create New Lorebook") instead of "page element not found".

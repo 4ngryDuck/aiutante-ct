@@ -19,7 +19,7 @@
     "port": 8434,
     "context": 65536,
     "parallel": 2,
-    "extra_args": ["-fa", "on", "-ctk", "q4_0", "-ctv", "q4_0", "--jinja", "--reasoning", "off"],
+    "extra_args": ["--load-mode", "none", "-fa", "on", "-ctk", "q4_0", "-ctv", "q4_0", "--jinja", "--reasoning", "off"],
     "env": {}
   },
 

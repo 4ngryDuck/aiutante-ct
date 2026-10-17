@@ -26,7 +26,7 @@ After a change: STOP and START (or restart only the server).
 | `port` | `8434` | Keep it equal to the port in `engines.local.url` |
 | `context` | `65536` | Context tokens, shared by `parallel` slots (2 × 32K: Translate does not wait for Lore) |
 | `parallel` | `2` | |
-| `extra_args` | `["-fa", "on", "-ctk", "q4_0", "-ctv", "q4_0", "--jinja", "--reasoning", "off"]` | Passed to llama-server as they are |
+| `extra_args` | `["--load-mode", "none", "-fa", "on", "-ctk", "q4_0", "-ctv", "q4_0", "--jinja", "--reasoning", "off"]` | Passed to llama-server as they are. `--load-mode none` loads the model without mmap: with the model fully in VRAM, llama-server uses ~0.9 GB of RAM instead of ~14 GB, same speed (this build has no `--no-mmap`) |
 | `env` | `{"GGML_VK_DISABLE_INTEGER_DOT_PRODUCT": "1"}` | Environment variables. That one made prompt reading 2-3× faster on a Radeon VII (Vulkan) |
 
 Recent llama.cpp builds fit the model to the **free** VRAM by themselves (`--fit`, on by default): if the card is busy

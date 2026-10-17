@@ -189,6 +189,8 @@ keep working. Please [open an issue](https://github.com/4ngryDuck/aiutante-ct/is
 **The display says ⚠ slow.** The graphics card is full and part of the model went to normal RAM (10-20× slower).
 Close games, other models or GPU-hungry browser tabs, then STOP and START.
 
+**Why does llama-server use so little RAM?** START loads the model with `--load-mode none` (no mmap): when the model fits in VRAM, llama-server keeps ~0.9 GB in RAM instead of a full ~14 GB copy, with the same speed. If the model does not fit, the part that stays on the CPU still uses RAM, as expected.
+
 **Can I use a cloud API instead?** The server speaks the OpenAI chat format, so technically yes, but then your chats
 leave your PC. The project is about staying local, so this is not documented on purpose.
 
